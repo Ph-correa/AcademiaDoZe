@@ -5,18 +5,14 @@ using System.Text;
 //Pedro Henrique correa
 namespace AcademiaDoZe.Domain.Entities;
 
-public class AcessoColaborador : Entity
+public class AcessoColaborador : Entity, IAggregateRoot
 {
-    public Colaborador Colaborador { get; private set; }
+    public int ColaboradorId { get; private set; }
     public DateTime DataHora { get; private set; }
 
-    private AcessoColaborador(
-        int id,
-        Colaborador colaborador,
-        DateTime dataHora
-    ) : base(id)
+    private AcessoColaborador(int id, int colaboradorId, DateTime dataHora) : base(id)
     {
-        Colaborador = colaborador;
+        ColaboradorId = colaboradorId;
         DataHora = dataHora;
     }
 
@@ -25,15 +21,14 @@ public class AcessoColaborador : Entity
         var notifications = new List<Notification>();
 
         if (colaborador == null)
-            notifications.Add(new Notification("Colaborador", "COLABORADOR_OBRIGATORIO"));
+            notifications.Add(new Notification("Colaborador", "COLABORADOR_INVALIDO"));
 
-        if (dataHora == default)
-            notifications.Add(new Notification("DataHora", "DATA_HORA_OBRIGATORIA"));
+        if (dataHora.TimeOfDay < new TimeSpan(6, 0, 0) || dataHora.TimeOfDay > new TimeSpan(22, 0, 0))
+            notifications.Add(new Notification("DataHora", "DATA_HORA_INTERVALO_INVALIDO"));
 
         if (notifications.Count != 0)
             return Result<AcessoColaborador>.Failure(notifications);
 
-        var acessoColaborador = new AcessoColaborador(id, colaborador, dataHora);
-        return Result<AcessoColaborador>.Success(acessoColaborador);
+        return Result<AcessoColaborador>.Success(new AcessoColaborador(id, colaborador!.Id, dataHora));
     }
 }

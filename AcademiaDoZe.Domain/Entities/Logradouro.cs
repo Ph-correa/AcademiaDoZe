@@ -7,7 +7,7 @@ using System.Text;
 //Pedro Henrique correa
 namespace AcademiaDoZe.Domain.Entities;
 
-public sealed class Logradouro : Entity
+public sealed class Logradouro : Entity , IAggregateRoot
 {
     // encapsulamento das propriedades, aplicando imutabilidade
     public Cep Cep { get; }

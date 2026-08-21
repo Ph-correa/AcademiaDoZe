@@ -1,10 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace AcademiaDoZe.Domain.Common
+﻿
+namespace AcademiaDoZe.Domain.Common;
+/// <summary>
+/// 
+/// </summary>
+  
+public interface IAggregateRoot
 {
-    internal class IAggregateRoot
-    {
-    }
+    
 }
+
