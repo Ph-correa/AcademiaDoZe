@@ -15,5 +15,19 @@
   <ItemGroup>
     <ProjectReference Include="..\AcademiaDoZe.Domain\AcademiaDoZe.Domain.csproj" />
   </ItemGroup>
+	
+	<ItemGroup>
+		<EmbeddedResource Include="Scripts\*.sql" />
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <None Remove="Scripts\script_sqlite.sql" />
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <EmbeddedResource Update="Scripts\script_sqlite.sql">
+	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+	  </EmbeddedResource>
+	</ItemGroup>
 
 </Project>
