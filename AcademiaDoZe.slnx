@@ -3,6 +3,7 @@
     <Project Path="AcademiaDoZe.Domain.Tests/AcademiaDoZe.Domain.Tests.csproj" />
     <Project Path="AcademiaDoZe.Infrastructure.Tests/AcademiaDoZe.Infrastructure.Tests.csproj" Id="da697eda-e6a6-41b6-a961-bfe2691d0b9c" />
   </Folder>
+  <Project Path="AcademiaDoZe.Application/AcademiaDoZe.Application.csproj" Id="01054462-977a-47fa-a031-5267dc525b37" />
   <Project Path="AcademiaDoZe.Domain/AcademiaDoZe.Domain.csproj" />
   <Project Path="AcademiaDoZe.Infrastructure/AcamiaDoZe.Infrastructure.csproj" />
 </Solution>
