@@ -6,4 +6,7 @@
   <Project Path="AcademiaDoZe.Application/AcademiaDoZe.Application.csproj" Id="01054462-977a-47fa-a031-5267dc525b37" />
   <Project Path="AcademiaDoZe.Domain/AcademiaDoZe.Domain.csproj" />
   <Project Path="AcademiaDoZe.Infrastructure/AcamiaDoZe.Infrastructure.csproj" />
+  <Project Path="AcademiaDoZe.Presentation.AppMaui/AcademiaDoZe.Presentation.AppMaui.csproj" Id="68c43d9b-d651-4d7f-aea4-7d1f3f9c5124">
+    <Deploy Solution="Debug|*" />
+  </Project>
 </Solution>

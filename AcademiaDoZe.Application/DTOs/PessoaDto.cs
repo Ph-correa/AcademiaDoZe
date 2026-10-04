@@ -13,4 +13,5 @@ public abstract class PessoaDto
     public string? Complemento { get; set; }
     public string? Senha { get; set; }
     public ArquivoDto? Foto { get; set; }
+    //PEDRO HENRIQUE CORREA
 }
