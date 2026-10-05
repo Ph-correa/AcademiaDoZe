@@ -2,6 +2,13 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
 
+    <!-- Estilos nomeados para Label adicionados para corrigir o erro -->
+    <Style TargetType="Label" x:Key="SubHeadline">
+        <Setter Property="FontSize" Value="22" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
+    </Style>
+
     <!-- Estilos nomeados para Border -->
     <Style TargetType="Border" x:Key="CardBorder">
         <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Gray900}}"/>
