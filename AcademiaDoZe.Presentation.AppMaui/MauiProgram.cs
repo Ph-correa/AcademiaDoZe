@@ -8,6 +8,9 @@ public static class MauiProgram
 {
     public static MauiApp CreateMauiApp()
     {
+        SQLitePCL.Batteries_V2.Init();
+
+
         var builder = MauiApp.CreateBuilder();
         builder
         .UseMauiApp<App>()
@@ -28,6 +31,17 @@ public static class MauiProgram
         builder.Services.AddTransient<LogradouroListPage>();
         builder.Services.AddTransient<LogradouroPage>();
         builder.Services.AddTransient<ConfigPage>();
+        // Registrar ViewModels
+        builder.Services.AddTransient<AlunoListViewModel>();
+        builder.Services.AddTransient<AlunoViewModel>();
+        builder.Services.AddTransient<AlunoListPage>();
+        builder.Services.AddTransient<AlunoPage>();
+        //Registro
+        builder.Services.AddTransient<ColaboradorListViewModel>();
+        builder.Services.AddTransient<ColaboradorViewModel>();
+        // Registrar Views
+        builder.Services.AddTransient<ColaboradorListPage>();
+        builder.Services.AddTransient<ColaboradorPage>();
 #if DEBUG
         builder.Logging.AddDebug();
 #endif
