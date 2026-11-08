@@ -42,6 +42,11 @@ public static class MauiProgram
         // Registrar Views
         builder.Services.AddTransient<ColaboradorListPage>();
         builder.Services.AddTransient<ColaboradorPage>();
+        // Matrícula
+        builder.Services.AddTransient<MatriculaListViewModel>();
+        builder.Services.AddTransient<MatriculaViewModel>();
+        builder.Services.AddTransient<MatriculaListPage>();
+        builder.Services.AddTransient<MatriculaPage>();
 #if DEBUG
         builder.Logging.AddDebug();
 #endif

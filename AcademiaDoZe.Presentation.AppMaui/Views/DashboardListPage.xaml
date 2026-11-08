@@ -10,8 +10,11 @@
 
             <!-- Header -->
             <StackLayout Spacing="10" Margin="0,0,0,20">
-                <Image Source="academiadoze.png" HorizontalOptions="Center" VerticalOptions="Start" HeightRequest="200" WidthRequest="200"/>
-                <Label Text="Academia do Zé" FontSize="26" FontAttributes="Bold" HorizontalTextAlignment="Center"/>
+                <!-- Logo sempre sobre fundo branco (legível no tema claro e escuro) -->
+                <Border BackgroundColor="White" Stroke="{StaticResource Primary}" StrokeThickness="2" StrokeShape="RoundRectangle 18" Padding="10" Margin="0,20,0,0" HorizontalOptions="Center">
+                    <Image Source="academiadoze.png" Aspect="AspectFit" HeightRequest="200" WidthRequest="356"/>
+                </Border>
+                <Label Text="Academia do Pedro" FontSize="26" FontAttributes="Bold" HorizontalTextAlignment="Center"/>
                 <Label Text="Sistema de Gerenciamento" FontSize="16" TextColor="Gray" HorizontalTextAlignment="Center"/>
             </StackLayout>
 
@@ -24,7 +27,7 @@
                         <TapGestureRecognizer Command="{Binding NavigateToLogradourosCommand}"/>
                     </Border.GestureRecognizers>
                     <StackLayout Spacing="10">
-                        <Label FontFamily="MaterialIcons" Text="&#xe7f1;" Style="{StaticResource SubHeadline}" HorizontalTextAlignment="Center" />
+                        <Label FontFamily="MaterialIcons" Text="&#xe7f1;" Style="{StaticResource SubHeadline}" TextColor="{StaticResource LaranjaEscuro}" FontSize="30" HorizontalTextAlignment="Center" />
                         <Label Text="{Binding TotalLogradouros}" Style="{StaticResource SubHeadline}" HorizontalTextAlignment="Center"/>
                         <Label Text="Logradouros" HorizontalTextAlignment="Center"/>
                     </StackLayout>
@@ -36,7 +39,7 @@
                         <TapGestureRecognizer Command="{Binding NavigateToAlunosCommand}"/>
                     </Border.GestureRecognizers>
                     <StackLayout Spacing="10">
-                        <Label FontFamily="MaterialIcons" Text="&#xe80c;" Style="{StaticResource SubHeadline}" HorizontalTextAlignment="Center" />
+                        <Label FontFamily="MaterialIcons" Text="&#xe80c;" Style="{StaticResource SubHeadline}" TextColor="{StaticResource LaranjaEscuro}" FontSize="30" HorizontalTextAlignment="Center" />
                         <Label Text="{Binding TotalAlunos}" Style="{StaticResource SubHeadline}" HorizontalTextAlignment="Center"/>
                         <Label Text="Alunos" HorizontalTextAlignment="Center"/>
                     </StackLayout>
@@ -48,7 +51,7 @@
                         <TapGestureRecognizer Command="{Binding NavigateToColaboradoresCommand}"/>
                     </Border.GestureRecognizers>
                     <StackLayout Spacing="10">
-                        <Label FontFamily="MaterialIcons" Text="&#xea67;" Style="{StaticResource SubHeadline}" HorizontalTextAlignment="Center" />
+                        <Label FontFamily="MaterialIcons" Text="&#xea67;" Style="{StaticResource SubHeadline}" TextColor="{StaticResource LaranjaEscuro}" FontSize="30" HorizontalTextAlignment="Center" />
                         <Label Text="{Binding TotalColaboradores}" Style="{StaticResource SubHeadline}" HorizontalTextAlignment="Center"/>
                         <Label Text="Colaboradores" HorizontalTextAlignment="Center"/>
                     </StackLayout>
@@ -60,7 +63,7 @@
                         <TapGestureRecognizer Command="{Binding NavigateToMatriculasCommand}"/>
                     </Border.GestureRecognizers>
                     <StackLayout Spacing="10">
-                        <Label FontFamily="MaterialIcons" Text="&#xefec;" Style="{StaticResource SubHeadline}" HorizontalTextAlignment="Center" />
+                        <Label FontFamily="MaterialIcons" Text="&#xefec;" Style="{StaticResource SubHeadline}" TextColor="{StaticResource LaranjaEscuro}" FontSize="30" HorizontalTextAlignment="Center" />
                         <Label Text="{Binding TotalMatriculas}" Style="{StaticResource SubHeadline}" HorizontalTextAlignment="Center"/>
                         <Label Text="Matrículas" HorizontalTextAlignment="Center"/>
                     </StackLayout>

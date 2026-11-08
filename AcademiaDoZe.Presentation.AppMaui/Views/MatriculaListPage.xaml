@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AcademiaDoZe.Presentation.AppMaui.Views.MatriculaListPage"
+             xmlns:vm="clr-namespace:AcademiaDoZe.Presentation.AppMaui.ViewModels"
+             x:DataType="vm:MatriculaListViewModel"
+             xmlns:dto="clr-namespace:AcademiaDoZe.Application.DTOs;assembly=AcademiaDoZe.Application"
+             xmlns:converters="clr-namespace:AcademiaDoZe.Presentation.AppMaui.Converters"
+             Title="{Binding Title}">
+
+    <!-- Recursos da Página -->
+    <ContentPage.Resources>
+        <converters:FotoToImageSourceConverter x:Key="FotoToImageSourceConverter" />
+        <converters:EnumDisplayConverter x:Key="EnumDisplay" />
+        <converters:RestricoesFlagsDisplayConverter x:Key="RestricoesDisplay" />
+        <converters:MatriculaStatusConverter x:Key="StatusConverter" />
+
+        <!-- Template único para Phone, Tablet, Desktop, TV, Watch e Default -->
+        <DataTemplate x:Key="MatriculaItemTemplate" x:DataType="dto:MatriculaDto">
+            <Grid Padding="1" Margin="5">
+                <Border Style="{StaticResource CardBorder}" Margin="10" Padding="0">
+                    <Grid ColumnDefinitions="6,*">
+
+                        <!-- Faixa lateral laranja (identidade visual) -->
+                        <BoxView Grid.Column="0" Color="{StaticResource Laranja}" />
+
+                        <Grid Grid.Column="1" Padding="12" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto" ColumnDefinitions="*,Auto,Auto">
+
+                            <!-- Foto do Aluno -->
+                            <Border Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Grid.RowSpan="6"
+                                    HeightRequest="96" WidthRequest="96"
+                                    StrokeShape="RoundRectangle 48"
+                                    Stroke="{StaticResource Laranja}" StrokeThickness="2"
+                                    Margin="8,0,0,0" VerticalOptions="Center">
+                                <Image Source="{Binding AlunoMatricula.Foto, Converter={StaticResource FotoToImageSourceConverter}}"
+                                       Aspect="AspectFill" HeightRequest="96" WidthRequest="96"/>
+                            </Border>
+
+                            <!-- Nome do Aluno -->
+                            <Label Grid.Row="0" Grid.Column="0" Text="{Binding AlunoMatricula.Nome}" FontAttributes="Bold" FontSize="16" Margin="0,0,0,2" LineBreakMode="TailTruncation" VerticalOptions="Center"/>
+
+                            <!-- Botões editar / excluir -->
+                            <Button Grid.Row="0" Grid.Column="1" Text="" Style="{StaticResource ButtonSmall}" Margin="4,0" Clicked="OnEditButtonClicked">
+                                <Button.ImageSource>
+                                    <FontImageSource FontFamily="MaterialIcons" Glyph="&#xe3c9;" />
+                                </Button.ImageSource>
+                            </Button>
+                            <Button Grid.Row="0" Grid.Column="2" Text="" Style="{StaticResource ButtonDanger}" Margin="4,0" Clicked="OnDeleteButtonClicked">
+                                <Button.ImageSource>
+                                    <FontImageSource FontFamily="MaterialIcons" Glyph="&#xe872;" />
+                                </Button.ImageSource>
+                            </Button>
+
+                            <!-- CPF e Nascimento -->
+                            <Label Grid.Row="1" Grid.Column="0" Margin="0,0,0,4" FontSize="12" TextColor="{AppThemeBinding Light={StaticResource Gray600}, Dark={StaticResource Gray400}}">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="CPF: "/>
+                                        <Span Text="{Binding AlunoMatricula.Cpf}"/>
+                                        <Span Text=" • Nasc: "/>
+                                        <Span Text="{Binding AlunoMatricula.DataNascimento, StringFormat='{0:dd/MM/yyyy}'}"/>
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+
+                            <!-- Badges: Plano + Status + Id -->
+                            <HorizontalStackLayout Grid.Row="2" Grid.Column="0" Spacing="6" Margin="0,0,0,4">
+                                <Border Padding="8,2" StrokeShape="RoundRectangle 4" StrokeThickness="0" BackgroundColor="{StaticResource Laranja}">
+                                    <Label Text="{Binding Plano, Converter={StaticResource EnumDisplay}}" FontSize="11" FontAttributes="Bold" TextColor="{StaticResource PrimaryDarkText}"/>
+                                </Border>
+                                <Border Padding="8,2" StrokeShape="RoundRectangle 4" StrokeThickness="0" BackgroundColor="{Binding DataFim, Converter={StaticResource StatusConverter}, ConverterParameter=cor}">
+                                    <Label Text="{Binding DataFim, Converter={StaticResource StatusConverter}}" FontSize="11" FontAttributes="Bold" TextColor="White"/>
+                                </Border>
+                                <Label Text="{Binding Id, StringFormat='#{0}'}" FontSize="11" VerticalOptions="Center" TextColor="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource Gray400}}"/>
+                            </HorizontalStackLayout>
+
+                            <!-- Vigência -->
+                            <Label Grid.Row="3" Grid.Column="0" Margin="0,0,0,3" FontSize="12">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="Vigência: " FontAttributes="Bold"/>
+                                        <Span Text="{Binding DataInicio, StringFormat='{0:dd/MM/yyyy}'}"/>
+                                        <Span Text=" até "/>
+                                        <Span Text="{Binding DataFim, StringFormat='{0:dd/MM/yyyy}'}"/>
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+
+                            <!-- Objetivo -->
+                            <Label Grid.Row="4" Grid.Column="0" Margin="0,0,0,3" FontSize="12" LineBreakMode="TailTruncation">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="Objetivo: " FontAttributes="Bold"/>
+                                        <Span Text="{Binding Objetivo}"/>
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+
+                            <!-- Restrições Médicas -->
+                            <Label Grid.Row="5" Grid.Column="0" Margin="0,0,0,3" FontSize="12" LineBreakMode="WordWrap">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="Restrições: " FontAttributes="Bold"/>
+                                        <Span Text="{Binding RestricoesMedicas, Converter={StaticResource RestricoesDisplay}}"/>
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+
+                            <!-- Observações -->
+                            <Label Grid.Row="6" Grid.Column="0" Text="{Binding ObservacoesRestricoes, StringFormat='Obs: {0}'}" FontSize="11" TextColor="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource Gray400}}" LineBreakMode="TailTruncation" Margin="0,0,0,2"/>
+                        </Grid>
+                    </Grid>
+                </Border>
+            </Grid>
+        </DataTemplate>
+    </ContentPage.Resources>
+
+    <!-- Lista de Matrículas -->
+    <Grid RowDefinitions="Auto,*">
+
+        <!-- Search Bar -->
+        <Border Grid.Row="0" Style="{StaticResource CardBorder}" Margin="15,10">
+            <Grid ColumnDefinitions="Auto,10,*,10,Auto" VerticalOptions="Center">
+                <Picker Grid.Column="0" Title="" ItemsSource="{Binding FilterTypes}" SelectedItem="{Binding SelectedFilterType}" WidthRequest="150" HorizontalOptions="Start" HeightRequest="40" VerticalOptions="Center"/>
+                <Entry Grid.Column="2" Text="{Binding SearchText}" Placeholder="Digite o valor..." HeightRequest="40" VerticalOptions="Center" ClearButtonVisibility="WhileEditing" ReturnCommand="{Binding SearchMatriculasCommand}" />
+                <Button Grid.Column="4" Text="" Style="{StaticResource ButtonPrimary}" FontSize="14" WidthRequest="80" HeightRequest="40" Command="{Binding SearchMatriculasCommand}">
+                    <Button.ImageSource>
+                        <FontImageSource FontFamily="MaterialIcons" Glyph="&#xe8b6;" />
+                    </Button.ImageSource>
+                </Button>
+            </Grid>
+        </Border>
+
+        <!-- lista/grade + FAB -->
+        <Grid Grid.Row="1">
+            <RefreshView IsRefreshing="{Binding IsRefreshing}" Command="{Binding RefreshCommand}">
+                <CollectionView ItemsSource="{Binding Matriculas}" SelectionMode="None" Margin="10">
+                    <CollectionView.ItemsLayout>
+                        <GridItemsLayout Orientation="Vertical">
+                            <GridItemsLayout.Span>
+                                <OnIdiom x:TypeArguments="x:Int32">
+                                    <OnIdiom.Phone>1</OnIdiom.Phone>
+                                    <OnIdiom.Default>1</OnIdiom.Default>
+                                    <OnIdiom.Tablet>2</OnIdiom.Tablet>
+                                    <OnIdiom.Desktop>3</OnIdiom.Desktop>
+                                    <OnIdiom.TV>4</OnIdiom.TV>
+                                </OnIdiom>
+                            </GridItemsLayout.Span>
+                        </GridItemsLayout>
+                    </CollectionView.ItemsLayout>
+
+                    <CollectionView.EmptyView>
+                        <StackLayout VerticalOptions="Center">
+                            <Label Text="Nenhuma matrícula encontrada" HorizontalOptions="Center" Style="{StaticResource SubHeadline}"/>
+                            <Button Text="Adicionar Primeira Matrícula" Command="{Binding AddMatriculaCommand}" Style="{StaticResource ButtonPrimary}" HeightRequest="50" Margin="0,20,0,0"/>
+                        </StackLayout>
+                    </CollectionView.EmptyView>
+
+                    <CollectionView.ItemTemplate>
+                        <StaticResource Key="MatriculaItemTemplate" />
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </RefreshView>
+
+            <!-- FAB (laranja da logo) -->
+            <Button Text="" Command="{Binding AddMatriculaCommand}" Style="{StaticResource ButtonPrimary}" CornerRadius="28" WidthRequest="56" HeightRequest="56" HorizontalOptions="End" VerticalOptions="End" Margin="20">
+                <Button.Shadow>
+                    <Shadow Brush="{AppThemeBinding Light=Black, Dark=Gray}" Offset="0,4" Radius="8" Opacity="0.3"/>
+                </Button.Shadow>
+                <Button.ImageSource>
+                    <FontImageSource FontFamily="MaterialIcons" Glyph="&#xe145;" Color="{StaticResource PrimaryDarkText}" />
+                </Button.ImageSource>
+            </Button>
+        </Grid>
+
+        <ActivityIndicator Grid.Row="0" Grid.RowSpan="2" IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" Color="{StaticResource Laranja}" VerticalOptions="Center" HorizontalOptions="Center"/>
+    </Grid>
+</ContentPage>

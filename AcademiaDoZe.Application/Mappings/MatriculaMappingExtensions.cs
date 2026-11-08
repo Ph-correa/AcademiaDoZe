@@ -62,10 +62,10 @@ public static class MatriculaMappingExtensions
         var result = Matricula.Criar(
         matricula.Id,
         aluno,
-        matriculaDto.Plano != default ? matriculaDto.Plano.ToDomain() : matricula.Plano,
+        matriculaDto.Plano.ToDomain(), // Mensal = 0 é válido, não pode ser tratado como "não informado"
         matriculaDto.DataInicio != default ? matriculaDto.DataInicio : matricula.DataInicio,
         matriculaDto.Objetivo ?? matricula.Objetivo,
-        matriculaDto.RestricoesMedicas != default ? matriculaDto.RestricoesMedicas.ToDomain() : matricula.RestricoesMedicas,
+        matriculaDto.RestricoesMedicas.ToDomain(), // None = 0 é válido (sem restrições)
         laudo,
         matriculaDto.ObservacoesRestricoes ?? matricula.ObservacoesRestricoes
         );

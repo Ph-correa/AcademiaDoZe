@@ -130,9 +130,8 @@ return m.ToDto(alunoDto);
         {
             throw new InvalidOperationException("Alunos menores de 16 anos devem obrigatoriamente apresentar um laudo médico que os autorize a praticar atividades físicas.");
         }
-        var restricoes = matriculaDto.RestricoesMedicas != default
-        ? matriculaDto.RestricoesMedicas
-        : matriculaExistente.RestricoesMedicas.ToApplication();
+        // Usa sempre o valor vindo da tela: None (0) é um valor válido (usuário desmarcou todas as restrições)
+        var restricoes = matriculaDto.RestricoesMedicas;
         if (restricoes != AppMatriculaRestricoes.None && !possuiLaudo)
         {
             throw new InvalidOperationException("Alunos com restrições de saúde registradas devem apresentar um parecer médico autorizando a realização de atividades físicas.");

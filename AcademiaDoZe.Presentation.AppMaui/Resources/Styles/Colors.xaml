@@ -1,22 +1,49 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
-<ResourceDictionary 
+<ResourceDictionary
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
 
-    <!-- Note: For Android please see also Platforms\Android\Resources\values\colors.xml -->
+    <!-- ============================================================
+         Identidade visual - GYM do Pedro
+         Paleta: laranja claro + preto + branco (clean)
+         Note: For Android please see also Platforms\Android\Resources\values\colors.xml
+         ============================================================ -->
 
-    <Color x:Key="Primary">#512BD4</Color>
-    <Color x:Key="PrimaryDark">#ac99ea</Color>
-    <Color x:Key="PrimaryDarkText">#242424</Color>
-    <Color x:Key="Secondary">#DFD8F7</Color>
-    <Color x:Key="SecondaryDarkText">#9880e5</Color>
-    <Color x:Key="Tertiary">#2B0B98</Color>
+    <!-- Laranja principal (clarinho, tirado da logo) -->
+    <Color x:Key="Primary">#F6A55E</Color>
+    <!-- Laranja no tema escuro -->
+    <Color x:Key="PrimaryDark">#F8B77D</Color>
+    <!-- Texto sobre o laranja (preto suave) -->
+    <Color x:Key="PrimaryDarkText">#1A1A1A</Color>
+    <!-- Laranja bem suave para fundos de destaque / itens selecionados -->
+    <Color x:Key="Secondary">#FDEBDC</Color>
+    <Color x:Key="SecondaryDarkText">#F6A55E</Color>
+    <!-- Preto da marca -->
+    <Color x:Key="Tertiary">#1A1A1A</Color>
+
+    <!-- Atalhos com nomes em português (usados nas telas de Matrícula) -->
+    <Color x:Key="Laranja">#F6A55E</Color>
+    <Color x:Key="LaranjaSuave">#FDEBDC</Color>
+    <Color x:Key="LaranjaEscuro">#D9822B</Color>
+
+    <!-- Fundos -->
+    <Color x:Key="PageBackground">#FFFAF6</Color>
+    <Color x:Key="CardBackground">#FFFFFF</Color>
+    <Color x:Key="CardStroke">#F3DFCC</Color>
+    <Color x:Key="PageBackgroundDark">#121212</Color>
+    <Color x:Key="CardBackgroundDark">#1E1E1E</Color>
+    <Color x:Key="CardStrokeDark">#3A2E24</Color>
+
+    <!-- Feedback -->
+    <Color x:Key="Danger">#E5484D</Color>
+    <Color x:Key="Success">#16A34A</Color>
 
     <Color x:Key="White">White</Color>
     <Color x:Key="Black">Black</Color>
-    <Color x:Key="Magenta">#D600AA</Color>
-    <Color x:Key="MidnightBlue">#190649</Color>
-    <Color x:Key="OffBlack">#1f1f1f</Color>
+    <!-- Mantido por compatibilidade (ButtonDanger antigo); agora é um vermelho suave -->
+    <Color x:Key="Magenta">#E5484D</Color>
+    <Color x:Key="MidnightBlue">#1A1A1A</Color>
+    <Color x:Key="OffBlack">#1A1A1A</Color>
 
     <Color x:Key="Gray100">#E1E1E1</Color>
     <Color x:Key="Gray200">#C8C8C8</Color>
