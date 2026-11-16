@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AcademiaDoZe.Presentation.AppMaui.Views.AcessoAlunoPage"
+             xmlns:vm="clr-namespace:AcademiaDoZe.Presentation.AppMaui.ViewModels"
+             xmlns:dto="clr-namespace:AcademiaDoZe.Application.DTOs;assembly=AcademiaDoZe.Application"
+             xmlns:converters="clr-namespace:AcademiaDoZe.Presentation.AppMaui.Converters"
+             x:DataType="vm:AcessoAlunoViewModel"
+             Title="{Binding Title}">
+
+    <ContentPage.Resources>
+        <converters:FotoToImageSourceConverter x:Key="FotoToImageSourceConverter" />
+        <converters:AcessoTipoConverter x:Key="AcessoTipo" />
+        <converters:AcessoDetalheConverter x:Key="AcessoDetalhe" />
+    </ContentPage.Resources>
+
+    <ScrollView>
+        <StackLayout Spacing="16" Padding="0,10,0,20">
+
+            <!-- Card 1: Identificação do aluno -->
+            <Border Style="{StaticResource CardBorder}" Margin="15,0">
+                <StackLayout Spacing="12">
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
+                        <Label Grid.Column="0" Text="&#xe7fd;" FontFamily="MaterialIcons" FontSize="22" TextColor="{StaticResource LaranjaEscuro}" VerticalOptions="Center"/>
+                        <Label Grid.Column="1" Text="Identificação do Aluno" Style="{StaticResource SubHeadline}" VerticalOptions="Center"/>
+                    </Grid>
+
+                    <StackLayout Spacing="5">
+                        <Label Text="CPF do Aluno"/>
+                        <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="10">
+                            <Entry Grid.Column="0" Text="{Binding Cpf}" Placeholder="000.000.000-00" Keyboard="Numeric" MaxLength="14" ClearButtonVisibility="WhileEditing" ReturnCommand="{Binding SearchByCpfCommand}" />
+                            <Button Grid.Column="1" Text="Buscar" Command="{Binding SearchByCpfCommand}" Style="{StaticResource ButtonPrimary}" HeightRequest="40" Padding="15,0">
+                                <Button.ImageSource>
+                                    <FontImageSource FontFamily="MaterialIcons" Glyph="&#xe8b6;" Color="{StaticResource PrimaryDarkText}" />
+                                </Button.ImageSource>
+                            </Button>
+                            <Button Grid.Column="2" Text="Limpar" Command="{Binding LimparCommand}" Style="{StaticResource ButtonSecondary}" HeightRequest="40" Padding="15,0" />
+                        </Grid>
+                    </StackLayout>
+
+                    <!-- Aviso quando nenhum aluno foi selecionado -->
+                    <Border Padding="12" StrokeThickness="0" StrokeShape="RoundRectangle 8" BackgroundColor="{AppThemeBinding Light={StaticResource LaranjaSuave}, Dark=#332701}" IsVisible="{Binding HasNoAluno}">
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                            <Label Grid.Column="0" Text="&#xe88e;" FontFamily="MaterialIcons" TextColor="{StaticResource LaranjaEscuro}" VerticalOptions="Center" FontSize="20"/>
+                            <Label Grid.Column="1" Text="Digite o CPF e clique em 'Buscar' para registrar a entrada ou a saída do aluno." VerticalOptions="Center" FontSize="13" LineBreakMode="WordWrap"/>
+                        </Grid>
+                    </Border>
+
+                    <!-- Resumo do aluno selecionado -->
+                    <Border Padding="12" StrokeShape="RoundRectangle 10" Stroke="{StaticResource Laranja}" StrokeThickness="1" BackgroundColor="{AppThemeBinding Light={StaticResource LaranjaSuave}, Dark={StaticResource Gray950}}" IsVisible="{Binding HasAluno}">
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="14">
+                            <Border Grid.Column="0" HeightRequest="72" WidthRequest="72" StrokeShape="RoundRectangle 36" Stroke="{StaticResource Laranja}" StrokeThickness="2" BackgroundColor="White" VerticalOptions="Center">
+                                <Image Source="{Binding Aluno.Foto, Converter={StaticResource FotoToImageSourceConverter}}" Aspect="AspectFill" HeightRequest="72" WidthRequest="72"/>
+                            </Border>
+                            <VerticalStackLayout Grid.Column="1" Spacing="4" VerticalOptions="Center">
+                                <Label Text="{Binding Aluno.Nome}" FontAttributes="Bold" FontSize="16" LineBreakMode="TailTruncation"/>
+                                <Label Text="{Binding Aluno.Cpf, StringFormat='CPF: {0}'}" FontSize="12" TextColor="{AppThemeBinding Light={StaticResource Gray600}, Dark={StaticResource Gray400}}"/>
+
+                                <!-- Situação da matrícula -->
+                                <Label Text="{Binding MatriculaTexto}" FontSize="12" FontAttributes="Bold" TextColor="{StaticResource Success}" IsVisible="{Binding TemMatriculaAtiva}" LineBreakMode="WordWrap"/>
+                                <Label Text="{Binding MatriculaTexto}" FontSize="12" FontAttributes="Bold" TextColor="{StaticResource Danger}" IsVisible="{Binding SemMatriculaAtiva}"/>
+
+                                <!-- Presença -->
+                                <HorizontalStackLayout Spacing="6">
+                                    <Border Padding="8,2" StrokeThickness="0" StrokeShape="RoundRectangle 4" BackgroundColor="{StaticResource Success}" IsVisible="{Binding Presente}">
+                                        <Label Text="NA ACADEMIA" FontSize="11" FontAttributes="Bold" TextColor="White"/>
+                                    </Border>
+                                    <Border Padding="8,2" StrokeThickness="0" StrokeShape="RoundRectangle 4" BackgroundColor="{StaticResource Gray500}" IsVisible="{Binding Ausente}">
+                                        <Label Text="FORA DA ACADEMIA" FontSize="11" FontAttributes="Bold" TextColor="White"/>
+                                    </Border>
+                                </HorizontalStackLayout>
+                            </VerticalStackLayout>
+                        </Grid>
+                    </Border>
+                </StackLayout>
+            </Border>
+
+            <!-- Ações: Entrada e Saída -->
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="12" Margin="15,0" IsVisible="{Binding HasAluno}">
+                <Button Grid.Column="0" Text="Registrar Entrada" Command="{Binding RegistrarEntradaCommand}" Style="{StaticResource ButtonPrimary}" HeightRequest="54">
+                    <Button.ImageSource>
+                        <FontImageSource FontFamily="MaterialIcons" Glyph="&#xea77;" Color="{StaticResource PrimaryDarkText}" />
+                    </Button.ImageSource>
+                </Button>
+                <Button Grid.Column="1" Text="Registrar Saída" Command="{Binding RegistrarSaidaCommand}" Style="{StaticResource ButtonSecondary}" HeightRequest="54">
+                    <Button.ImageSource>
+                        <FontImageSource FontFamily="MaterialIcons" Glyph="&#xe9ba;" Color="{AppThemeBinding Light={StaticResource Tertiary}, Dark={StaticResource White}}" />
+                    </Button.ImageSource>
+                </Button>
+            </Grid>
+
+            <!-- Resultado do último registro: sucesso -->
+            <Border Margin="15,0" Padding="14" StrokeShape="RoundRectangle 10" Stroke="{StaticResource Success}" StrokeThickness="1" BackgroundColor="{AppThemeBinding Light=#DCFCE7, Dark=#064E3B}" IsVisible="{Binding HasMensagemSucesso}">
+                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                    <Label Grid.Column="0" Text="&#xe86c;" FontFamily="MaterialIcons" FontSize="24" TextColor="{StaticResource Success}" VerticalOptions="Start"/>
+                    <Label Grid.Column="1" Text="{Binding Mensagem}" FontSize="14" TextColor="{AppThemeBinding Light=#166534, Dark=#86EFAC}" LineBreakMode="WordWrap"/>
+                </Grid>
+            </Border>
+
+            <!-- Resultado do último registro: não permitido -->
+            <Border Margin="15,0" Padding="14" StrokeShape="RoundRectangle 10" Stroke="{StaticResource Danger}" StrokeThickness="1" BackgroundColor="{AppThemeBinding Light=#FEE2E2, Dark=#7F1D1D}" IsVisible="{Binding HasMensagemErro}">
+                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                    <Label Grid.Column="0" Text="&#xe000;" FontFamily="MaterialIcons" FontSize="24" TextColor="{StaticResource Danger}" VerticalOptions="Start"/>
+                    <Label Grid.Column="1" Text="{Binding Mensagem}" FontSize="14" TextColor="{AppThemeBinding Light=#991B1B, Dark=#FCA5A5}" LineBreakMode="WordWrap"/>
+                </Grid>
+            </Border>
+
+            <!-- Quem está dentro da academia agora: toque para ver o perfil ou registre a saída direto -->
+            <Border Style="{StaticResource CardBorder}" Margin="15,0">
+                <StackLayout Spacing="10">
+                    <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="8">
+                        <Label Grid.Column="0" Text="&#xe7ef;" FontFamily="MaterialIcons" FontSize="22" TextColor="{StaticResource LaranjaEscuro}" VerticalOptions="Center"/>
+                        <Label Grid.Column="1" Text="{Binding PresentesTitulo}" Style="{StaticResource SubHeadline}" VerticalOptions="Center" LineBreakMode="TailTruncation"/>
+                        <Button Grid.Column="2" Text="Atualizar" Command="{Binding AtualizarCommand}" Style="{StaticResource ButtonSecondary}" HeightRequest="36" Padding="14,0" FontSize="13">
+                            <Button.ImageSource>
+                                <FontImageSource FontFamily="MaterialIcons" Glyph="&#xe5d5;" Size="18" Color="{AppThemeBinding Light={StaticResource Tertiary}, Dark={StaticResource White}}" />
+                            </Button.ImageSource>
+                        </Button>
+                    </Grid>
+
+                    <Label Text="Nenhum aluno na academia no momento." FontSize="13" TextColor="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource Gray400}}" IsVisible="{Binding SemPresentes}"/>
+
+                    <VerticalStackLayout Spacing="8" BindableLayout.ItemsSource="{Binding Presentes}">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="dto:AcessoAlunoDto">
+                                <Border Padding="10" StrokeShape="RoundRectangle 10" Stroke="{StaticResource Laranja}" StrokeThickness="1" BackgroundColor="{AppThemeBinding Light={StaticResource LaranjaSuave}, Dark={StaticResource Gray950}}">
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="OnPresenteTapped" />
+                                    </Border.GestureRecognizers>
+                                    <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
+                                        <Border Grid.Column="0" HeightRequest="52" WidthRequest="52" StrokeShape="RoundRectangle 26" Stroke="{StaticResource Laranja}" StrokeThickness="2" BackgroundColor="White" VerticalOptions="Center">
+                                            <Image Source="{Binding AlunoAcesso.Foto, Converter={StaticResource FotoToImageSourceConverter}}" Aspect="AspectFill" HeightRequest="52" WidthRequest="52"/>
+                                        </Border>
+                                        <VerticalStackLayout Grid.Column="1" Spacing="2" VerticalOptions="Center">
+                                            <Label Text="{Binding AlunoAcesso.Nome}" FontAttributes="Bold" FontSize="15" LineBreakMode="TailTruncation"/>
+                                            <Label Text="{Binding AlunoAcesso.Cpf, StringFormat='CPF: {0}'}" FontSize="12" TextColor="{AppThemeBinding Light={StaticResource Gray600}, Dark={StaticResource Gray400}}"/>
+                                            <Label Text="{Binding DataHora, StringFormat='Entrou às {0:HH:mm}'}" FontSize="12" FontAttributes="Bold" TextColor="{StaticResource Success}"/>
+                                        </VerticalStackLayout>
+                                        <Button Grid.Column="2" Text="Registrar Saída" Clicked="OnSaidaPresenteClicked" Style="{StaticResource ButtonPrimary}" HeightRequest="40" Padding="14,0" FontSize="13" VerticalOptions="Center">
+                                            <Button.ImageSource>
+                                                <FontImageSource FontFamily="MaterialIcons" Glyph="&#xe9ba;" Size="18" Color="{StaticResource PrimaryDarkText}" />
+                                            </Button.ImageSource>
+                                        </Button>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </VerticalStackLayout>
+                </StackLayout>
+            </Border>
+
+            <!-- Histórico de registros (entradas e saídas) do dia escolhido -->
+            <Border Style="{StaticResource CardBorder}" Margin="15,0">
+                <StackLayout Spacing="10">
+                    <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="8">
+                        <Label Grid.Column="0" Text="&#xe889;" FontFamily="MaterialIcons" FontSize="22" TextColor="{StaticResource LaranjaEscuro}" VerticalOptions="Center"/>
+                        <Label Grid.Column="1" Text="{Binding HistoricoTitulo}" Style="{StaticResource SubHeadline}" VerticalOptions="Center" LineBreakMode="TailTruncation"/>
+                        <DatePicker Grid.Column="2" x:Name="HistoricoDatePicker" Format="dd/MM/yyyy" DateSelected="HistoricoDatePicker_DateSelected" VerticalOptions="Center"/>
+                    </Grid>
+
+                    <Label Text="Nenhum registro de entrada ou saída neste dia." FontSize="13" TextColor="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource Gray400}}" IsVisible="{Binding SemHistorico}"/>
+
+                    <VerticalStackLayout Spacing="8" BindableLayout.ItemsSource="{Binding Historico}">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="dto:AcessoAlunoDto">
+                                <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12" Padding="0,4">
+                                    <Label Grid.Column="0" Text="{Binding Tipo, Converter={StaticResource AcessoTipo}, ConverterParameter=icone}" FontFamily="MaterialIcons" FontSize="22" TextColor="{Binding Tipo, Converter={StaticResource AcessoTipo}, ConverterParameter=cor}" VerticalOptions="Center"/>
+                                    <VerticalStackLayout Grid.Column="1" Spacing="2" VerticalOptions="Center">
+                                        <Label Text="{Binding AlunoAcesso.Nome}" FontAttributes="Bold" FontSize="14" LineBreakMode="TailTruncation"/>
+                                        <HorizontalStackLayout Spacing="8">
+                                            <Border Padding="8,2" StrokeThickness="0" StrokeShape="RoundRectangle 4" VerticalOptions="Center" BackgroundColor="{Binding Tipo, Converter={StaticResource AcessoTipo}, ConverterParameter=cor}">
+                                                <Label Text="{Binding Tipo, Converter={StaticResource AcessoTipo}}" FontSize="11" FontAttributes="Bold" TextColor="White"/>
+                                            </Border>
+                                            <Label Text="{Binding ., Converter={StaticResource AcessoDetalhe}}" FontSize="12" VerticalOptions="Center" TextColor="{AppThemeBinding Light={StaticResource Gray600}, Dark={StaticResource Gray400}}"/>
+                                        </HorizontalStackLayout>
+                                    </VerticalStackLayout>
+                                    <Label Grid.Column="2" Text="{Binding DataHora, StringFormat='{0:HH:mm:ss}'}" FontAttributes="Bold" FontSize="14" VerticalOptions="Center"/>
+                                </Grid>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </VerticalStackLayout>
+                </StackLayout>
+            </Border>
+
+            <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" VerticalOptions="Center" HorizontalOptions="Center"/>
+        </StackLayout>
+    </ScrollView>
+</ContentPage>
